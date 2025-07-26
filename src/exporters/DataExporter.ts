@@ -1,30 +1,48 @@
-import { UserData } from "../data/UserData";
-import fetch from "node-fetch";
+import fetch from 'node-fetch';
+import { UserData } from '../data/UserData';
 
 export abstract class DataExporter {
   protected data: UserData[] = [];
-  protected result: string = "";
+  protected result: string = '';
 
-  public async export() {
-    // TODO: Implement export logic
+  public async export(): Promise<void> {
+    await this.load();
+    this.transform();
+    this.beforeRender();
+    this.render();
+    this.afterRender();
+    await this.save();
   }
 
-  protected async load() {
-    // TODO: Implement load logic
+  protected async load(): Promise<void> {
+    const response = await fetch('https://jsonplaceholder.typicode.com/users');
+    const users = await response.json();
+
+    // Записуємо у this.data
+    this.data = users.map((u: any) => ({
+      id: u.id,
+      name: u.name,
+      email: u.email,
+      phone: u.phone,
+    }));
   }
 
-  protected transform() {
-    // TODO: Implement transform logic
+  protected transform(): void {
+    // Відбір полів і сортування за name
+    this.data = this.data
+      .map(({ id, name, email, phone }) => ({ id, name, email, phone }))
+      .sort((a, b) => a.name.localeCompare(b.name));
   }
 
-  protected beforeRender() {
-    // hook
+  protected beforeRender(): void {
+    // hook - порожня за замовчуванням
   }
 
-  protected afterRender() {
-    // hook
+  protected abstract render(): void;
+
+  protected afterRender(): void {
+    // hook - порожня за замовчуванням
   }
 
-  protected abstract render(): string;
-  protected abstract save(): void;
+  protected abstract save(): Promise<void>;
 }

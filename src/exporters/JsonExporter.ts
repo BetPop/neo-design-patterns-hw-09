@@ -1,13 +1,12 @@
-import { DataExporter } from "./DataExporter";
-import { writeFileSync, existsSync, mkdirSync } from "fs";
-import { dirname } from "path";
+import { DataExporter } from './DataExporter';
+import * as fs from 'fs/promises';
 
 export class JsonExporter extends DataExporter {
-  protected render(): string {
-    // TODO
+  protected render(): void {
+    this.result = JSON.stringify(this.data, null, 2);
   }
 
-  protected save(): void {
-    // TODO
+  protected async save(): Promise<void> {
+    await fs.writeFile('./dist/users.json', this.result, 'utf-8');
   }
 }

@@ -1,15 +1,30 @@
-import { DataExporter } from "./DataExporter";
-import { writeFileSync, existsSync, mkdirSync } from "fs";
-import { dirname } from "path";
+import { DataExporter } from './DataExporter';
+import * as fs from 'fs/promises';
 
 export class XmlExporter extends DataExporter {
-  protected render(): string {
-    // TODO
+  protected render(): void {
+    const usersXml = this.data
+      .map(
+        user => `
+  <user>
+    <id>${user.id}</id>
+    <name>${user.name}</name>
+    <email>${user.email}</email>
+    <phone>${user.phone}</phone>
+  </user>`
+      )
+      .join('\n');
+
+    this.result = `<?xml version="1.0" encoding="UTF-8"?>
+<users>${usersXml}
+</users>`;
   }
 
-  // TODO afterRender
+  protected afterRender(): void {
+    this.result += `\n<!-- Експорт згенеровано: ${new Date().toISOString()} -->`;
+  }
 
-  protected save(): void {
-    // TODO
+  protected async save(): Promise<void> {
+    await fs.writeFile('./dist/users.xml', this.result, 'utf-8');
   }
 }
