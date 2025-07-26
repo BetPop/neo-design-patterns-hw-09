@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^22.15.3",
+    "@types/node": "^22.16.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
@@ -18,5 +18,14 @@
     "@types/node-fetch": "^2.6.12",
     "fast-xml-parser": "^5.2.1",
     "node-fetch": "^2.7.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BetPop/neo-design-patterns-hw-09.git"
+  },
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/BetPop/neo-design-patterns-hw-09/issues"
+  },
+  "homepage": "https://github.com/BetPop/neo-design-patterns-hw-09#readme"
 }
